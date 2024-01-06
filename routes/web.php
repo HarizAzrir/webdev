@@ -3,7 +3,7 @@
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -29,7 +29,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-Route::get('/adminhomepage', [HomeController::class, 'index'])->name('adminhomepage');
+// Route::get('/adminhomepage', [HomeController::class, 'index'])->name('adminhomepage');
 Route::get('/userhomepage', [HomeController::class, 'userhomepage'])->name('dashboard');
 
 Route::get('/clubadmin', [ClubController::class, 'index'])->name('clubs.index');
@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
     // web.php
     Route::get('/clubs/{club}', [ClubController::class, 'detail'])->name('clubuser_hariz.clubdetail');
 
+
+    Route::get('/events', [EventController::class, 'index'])->name('event.index');
 });
 
 require __DIR__.'/auth.php';

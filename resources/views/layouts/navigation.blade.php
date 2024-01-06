@@ -18,10 +18,9 @@
                     <x-nav-link :href="route('clubuser_hariz.homepage')" :active="request()->routeIs('clubuser')">
                         {{ __('Clubs') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('clubuser_hariz.homepage')" :active="request()->routeIs('clubuser')">
+                    <x-nav-link :href="route('event.index')" :active="request()->routeIs('events')">
                         {{ __('Events') }}
                     </x-nav-link>
-    
                 </div>
             </div>
 
@@ -74,9 +73,15 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            <x-nav-link :href="route('home')" :active="request()->routeIs('dashboard')">
+                {{ __('Home') }}
+            </x-nav-link>
+            <x-nav-link :href="route('clubuser_hariz.homepage')" :active="request()->routeIs('clubuser')">
+                {{ __('Clubs') }}
+            </x-nav-link>
+            <x-nav-link :href="route('event.index')" :active="request()->routeIs('events')">
+                {{ __('Events') }}
+            </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
