@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Club;
 Use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -20,6 +21,10 @@ class HomeController extends Controller
                 return view('adminhomepage');   //admin page
             }
 
+            else if($usertype == "president"){
+                return view('dashboard');   //admin page
+            }
+
             else {
                 return redirect()->back();
             }
@@ -28,8 +33,8 @@ class HomeController extends Controller
 
 
     public function userhomepage(){
-
-        return view("dashboard");
+        $clubs = Club::all();
+        return view("dashboard", ['clubs' => $clubs]);
     }
 
     public function adminhomepage(){

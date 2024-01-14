@@ -28,327 +28,76 @@
       </div>
       
     </div>
-    <!-- component -->
-<div tabindex="0" class="focus:outline-none">
-            <!-- Remove py-8 -->
-            <div class="mx-auto container py-8">
-                <div class="flex flex-wrap items-center lg:justify-between justify-center">
-                    <!-- Card 1 -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="person capturing an image" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png" tabindex="0" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 1 Ends -->
-                    <!-- Card 2 -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="person capturing an image" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png" tabindex="0" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
+
+            <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
+
+<div class="text-center p-10">
+    <h1 class="font-bold text-4xl mb-4">Responsive Product card grid</h1>
+    <h1 class="text-3xl">Tailwind CSS</h1>
+</div>
+@php
+    // Store club data in an array
+    $clubDataArray = $clubs->toArray();
+@endphp
+
+<!-- ✅ Grid Section - Starts Here 👇 -->
+<section id="Projects"
+    class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+
+    <!-- Loop through each club in the array -->
+    @foreach($clubDataArray as $club)
+        <!-- Product card starts here -->
+        <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+            <a href="#">
+                <!-- Use the club's image URL or fallback to a blank profile image -->
+                <img src="{{ $club['image'] ? url('storage/' . $club['image']) : 'images/blankprofile.png' }}"
+                    alt="{{ $club['clubname'] }}" class="h-80 w-72 object-cover rounded-t-xl" />
+
+                <div class="px-4 py-3 w-72">
+                    <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                    <p class="text-lg font-bold text-black truncate block capitalize">{{ $club['clubname'] }}</p>
+                    <div class="flex items-center">
+                        <p class="text-lg font-semibold text-black cursor-auto my-3">$149</p>
+                        <del>
+                            <p class="text-sm text-gray-600 cursor-auto ml-2">$199</p>
+                        </del>
+                        <div class="ml-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                                <path
+                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                            </svg>
                         </div>
                     </div>
-                    <!-- Card 2 Ends -->
-                    <!-- Card 3  -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="person capturing an image" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png" tabindex="0" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3 Ends -->
-                    <!-- Card 4  -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="person capturing an image" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png" tabindex="0" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 4 Ends -->
                 </div>
-                <div class="flex flex-wrap items-center lg:justify-between justify-center pb-10 mt-16">
-                    <!-- Card 1 -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="girl texting" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap.png" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 1 Ends -->
-                    <!-- Card 2 -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="girl texting" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap.png" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 2 Ends -->
-                    <!-- Card 3  -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="girl texting" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap.png" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3 Ends -->
-                    <!-- Card 4  -->
-                    <div tabindex="0" class="focus:outline-none mx-2 w-72 xl:mb-0 mb-8">
-                        <div>
-                            <img alt="girl texting" src="https://cdn.tuk.dev/assets/templates/classified/Bitmap.png" class="focus:outline-none w-full h-44" />
-                        </div>
-                        <div class="bg-white bg-opacity-0">
-                            <div class="flex items-center justify-between px-4 pt-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" tabindex="0" class="focus:outline-none" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-                                    </svg>
-                                </div>
-                                <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                    <p tabindex="0" class="focus:outline-none text-xs text-yellow-700">Featured</p>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center">
-                                    <h2 tabindex="0" class="focus:outline-none text-lg font-semibold">iphone XS</h2>
-                                    <p tabindex="0" class="focus:outline-none text-xs text-gray-600 pl-5">4 days ago</p>
-                                </div>
-                                <p tabindex="0" class="focus:outline-none text-xs text-gray-600 mt-2">The Apple iPhone XS is available in 3 colors with 64GB memory. Shoot amazing videos</p>
-                                <div class="flex mt-4">
-                                    <div>
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">12 months warranty</p>
-                                    </div>
-                                    <div class="pl-2">
-                                        <p tabindex="0" class="focus:outline-none text-xs text-gray-600 px-2 bg-gray-200 py-1">Complete box</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between py-4">
-                                    <h2 tabindex="0" class="focus:outline-none text-indigo-700 text-xs font-semibold">Bay Area, San Francisco</h2>
-                                    <h3 tabindex="0" class="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 4 Ends -->
-                </div>
-            </div>
+            </a>
+        </div>
+        <!-- Product card ends here -->
+    @endforeach
+
+</section>
+<!-- ✅ Grid Section - Ends Here 👆 -->
+
+
+
+<!-- credit -->
+<div class="text-center py-10 px-10">
+    <h2 class="font-bold text-2xl md:text-4xl mb-4">Footer Hariz</h2>
+</div>
+
+
+<!-- Support Me 🙏🥰 -->
+<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+<script>
+    kofiWidgetOverlay.draw('mohamedghulam', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Support me',
+            'floating-chat.donateButton.background-color': '#323842',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+</script>
             <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
         </div>
          <script src="chrome-extension://kgejglhpjiefppelpmljglcjbhoiplfn/shadydom.js"></script>

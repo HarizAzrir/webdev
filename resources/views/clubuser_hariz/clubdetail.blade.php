@@ -12,7 +12,7 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <!-- Display club image and club nickname -->
             <div class="text-center mb-4">
-                <img src="{{ $club->getImageURL() }}" alt="{{ $club->clubname }}" class="max-w-full mb-2 rounded-lg">
+<img src="{{ $club->getImageURL() }}" alt="{{ $club->clubname }}" class="w-80 mx-auto mb-2 rounded-lg">
                 <p class="text-lg font-semibold">{{ $club->club_nickname }}</p>
             </div>
 

@@ -119,12 +119,20 @@ public function store(Request $request)
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the allowed image types and size
         ]);
 
-           // Handle image upload
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image'] = $imagePath;
+          // Check if the user already has an image
+    if ($request->hasFile('image') && $club->image) {
+        // Delete the old profile picture if it exists
+        Storage::disk('public')->delete($club->image);
     }
 
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public');
+        $data['image'] = $imagePath;
+    } else {
+        // If no new image is provided, keep the existing image
+        $data['image'] = $club->image;
+    }
         $club ->update($data);
 
         return redirect(route('clubs.index'))->with('success', 'Club Updated Sucessfully');

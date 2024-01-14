@@ -1,1 +1,1 @@
-<h1> Admin Post Page </h1>
+<h1> President Post Page </h1>

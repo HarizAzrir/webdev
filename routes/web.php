@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,11 +26,22 @@ Route::get('/', function () {
 });
 
 
+Route::middleware(['auth', 'president'])->group(function () {
+    Route::get('/post', [HomeController::class, 'post'])->name('post');
 
+    });
 
 Route::middleware(['auth', 'admin'])->group(function () {
 // Route::get('/adminhomepage', [HomeController::class, 'index'])->name('adminhomepage');
 Route::get('/userhomepage', [HomeController::class, 'userhomepage'])->name('dashboard');
+
+Route::get('/useradmin', [UserController::class, 'index'])->name('useradmin.index');
+Route::get('/useradmin/create', [UserController::class, 'create'])->name('useradmin.create');
+Route::post('/useradmin', [UserController::class, 'store'])->name('useradmin.store');
+Route::get('/useradmin/{user}/edit', [UserController::class, 'edit'])->name('useradmin.edit');
+Route::put('/useradmin/{user}/update', [UserController::class, 'update'])->name('useradmin.update');
+Route::delete('/useradmin/{user}/destroy', [UserController::class, 'destroy'])->name('useradmin.destroy');
+
 
 Route::get('/clubadmin', [ClubController::class, 'index'])->name('clubs.index');
 Route::get('/clubadmin/create', [ClubController::class, 'create'])->name('clubs.create');

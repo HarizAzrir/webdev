@@ -77,7 +77,7 @@
 
         <!-- Main Content Area -->
         <div class="p-4">
-            <h1 class="text-2xl font-bold mb-4">Create a Club</h1>
+            <h1 class="text-2xl font-bold mb-4">Create User</h1>
 
             @if($errors->any())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -89,34 +89,15 @@
                 </div>
             @endif
 
-            <form enctype="multipart/form-data" method="post" action="{{ route('clubs.store') }}" class="max-w-md">
+            <form enctype="multipart/form-data" method="post" action="{{ route('useradmin.store') }}" class="max-w-md">
                 @csrf
                 @method("post")
 
                 <div class="mb-4">
-                    <label for="clubname" class="block text-gray-700 text-sm font-bold mb-2">Club Name:</label>
-                    <input type="text" name="clubname" id="clubname" placeholder="Enter Club Name"
+                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+                    <input type="text" name="name" id="name" placeholder="Enter Name"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-
-                <div class="mb-4">
-                    <label for="club_nickname" class="block text-gray-700 text-sm font-bold mb-2">Club Nickname:</label>
-                    <input type="text" name="club_nickname" id="club_nickname" placeholder="Enter Club Nickname"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-
-                <div class="mb-4">
-                    <label for="president" class="block text-gray-700 text-sm font-bold mb-2">President:</label>
-                    <input type="text" name="president" id="president" placeholder="Enter President"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-
-                <div class="mb-4">
-                    <label for="about" class="block text-gray-700 text-sm font-bold mb-2">About:</label>
-                    <input type="text" name="about" id="about" placeholder="Enter About"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-
 
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
@@ -125,16 +106,30 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="instagram" class="block text-gray-700 text-sm font-bold mb-2">Club Instagram:</label>
-                    <input type="text" name="instagram" id="instagram" placeholder="Enter Instagram"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                    <input type="password" name="password" id="password" placeholder="Enter Password"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
 
                 <div class="mb-4">
-                    <label for="contact_number" class="block text-gray-700 text-sm font-bold mb-2">Contact Number:</label>
-                    <input type="text" name="contact_number" id="contact_number" placeholder="Enter Contact Number"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2">Confirm Password:</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
+
+                <div class="mb-4">
+                    <label for="usertype" class="block text-gray-700 text-sm font-bold mb-2">User Type:</label>
+                    <select name="usertype" id="usertype" 
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="" selected disabled>Select User Type</option>
+                        <option value="user">User</option>
+                        <option value="president">President</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+
+
 
                 <!-- Add similar styling for other form fields -->
 
@@ -145,7 +140,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <input type="submit" value="Save the new club"
+                    <input type="submit" value="Save the new User"
                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 </div>
             </form>

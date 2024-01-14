@@ -6,6 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Add your stylesheets and scripts here -->
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -45,6 +47,16 @@
                     </svg>
                     Event
                 </a>
+
+                 <form method="POST" action="{{ route('logout') }}" class="mt-2">
+        @csrf
+        <button type="submit" class="flex items-center px-4 py-2 text-gray-100 hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Log Out
+        </button>
+    </form>
             </nav>
         </div>
     </div>
@@ -74,13 +86,120 @@
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="p-4">
-            <h1 class="text-2xl font-bold">Welcome to my dashboard!</h1>
-            <p class="mt-2 text-gray-600">This is an example dashboard using Tailwind CSS.</p>
+       <!-- Admin Dashboard -->
+<div class="p-4">
+
+    <!-- Welcome Section -->
+    <h1 class="text-2xl font-bold">Welcome to the Admin Dashboard!</h1>
+    <p class="mt-2 text-gray-600">You are now in the admin dashboard for event management.</p>
+
+    <!-- Overview Section -->
+    <div class="mt-6">
+        <h2 class="text-xl font-bold mb-4">Overview</h2>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Total Clubs -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold">Total Clubs</h3>
+                <p class="text-gray-600">23</p>
+            </div>
+
+            <!-- Total Events -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold">Total Events</h3>
+                <p class="text-gray-600">34</p>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold">Upcoming Events</h3>
+                <p class="text-gray-600">6</p>
+            </div>
+
+            <!-- Recently Added Events -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold">Recently Added Events</h3>
+                <p class="text-gray-600">5</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="mt-6">
+            <canvas id="clubEventsChart" width="400" height="200"></canvas>
         </div>
     </div>
+
+    <!-- Quick Actions Section -->
+    <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Quick Actions</h2>
+
+        <!-- Buttons for Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Add Club Button -->
+            <a href="#" class="bg-blue-500 text-white p-4 rounded-lg text-center hover:bg-blue-600">
+                <span class="text-lg font-semibold">Add Club</span>
+            </a>
+
+            <!-- Add Event Button -->
+            <a href="#" class="bg-green-500 text-white p-4 rounded-lg text-center hover:bg-green-600">
+                <span class="text-lg font-semibold">Add Event</span>
+            </a>
+
+            <!-- Manage Users Button -->
+            <a href="#" class="bg-purple-500 text-white p-4 rounded-lg text-center hover:bg-purple-600">
+                <span class="text-lg font-semibold">Manage Users</span>
+            </a>
+
+            <!-- Generate Reports Button -->
+            <a href="#" class="bg-orange-500 text-white p-4 rounded-lg text-center hover:bg-orange-600">
+                <span class="text-lg font-semibold">Generate Reports</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activities Section -->
+    <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Recent Activities</h2>
+
+        <!-- Activity Log -->
+        <ul class="divide-y divide-gray-300">
+            <li class="py-2">
+                <span class="text-gray-600">User John Doe added a new event "Football Tournament."</span>
+            </li>
+            <li class="py-2">
+                <span class="text-gray-600">Club XYZ updated their club information.</span>
+            </li>
+            <!-- Add more recent activities as needed -->
+        </ul>
+    </div>
+
 </div>
 
-</body>
+
+<!-- Script for creating a chart -->
+<script>
+    var ctx = document.getElementById('clubEventsChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Number of Events',
+                data: [12, 19, 3, 5, 2, 3, 8],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
 </html>
