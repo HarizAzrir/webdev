@@ -42,7 +42,7 @@
                 <!-- Product card starts here -->
                 <div class="swiper-slide"> <!-- Add swiper-slide class here -->
                     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                        <a href="#">
+                        <a href="{{ route('clubuser_hariz.clubdetail', ['club' => $clubDataArray[$i]['id']]) }}">
                             <!-- Use the club's image URL or fallback to a blank profile image -->
                             <img src="{{ $clubDataArray[$i]['image'] ? url('storage/' . $clubDataArray[$i]['image']) : 'images/blankprofile.png' }}"
                                 alt="{{ $clubDataArray[$i]['clubname'] }}" class="h-80 w-72 object-cover rounded-t-xl" />

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class Event extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $table = 'events';
 
@@ -18,13 +19,22 @@ class Event extends Model
         "dateEnd",
         "timeStart",
         "timeEnd",
+        "venue",
         "description",
         "price",
         "category",
         "subcategory1",
         "status",
-        "description",
+        "image",
     ];
+
+    public function getImageURL(){
+        if($this->image){
+            return url('storage/' .$this->image);
+        }
+        return "images/blankprofile.png";
+    }
+
 
     public function getDateStartFormattedAttribute()
     {
@@ -42,7 +52,8 @@ class Event extends Model
     }
 
     public function getTimeEndFormattedAttribute()
-    {
-        return Carbon::parse($this->attributes['timeEnd'])->format('H:i');
-    }
+{
+    return Carbon::parse($this->attributes['timeEnd'])->format('H:i');
+}
+
 }

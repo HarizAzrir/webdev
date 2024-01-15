@@ -14,7 +14,8 @@ class HomeController extends Controller
             $usertype = Auth()->user()->usertype;
 
             if($usertype == "user"){
-                return view('dashboard');
+                $clubs = Club::all();
+            return view("dashboard", ['clubs' => $clubs]);
             }
 
             else if($usertype == "admin"){
@@ -22,7 +23,8 @@ class HomeController extends Controller
             }
 
             else if($usertype == "president"){
-                return view('dashboard');   //admin page
+                $clubs = Club::all();
+            return view("dashboard", ['clubs' => $clubs]);
             }
 
             else {

@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('clubuser_hariz.homepage')" :active="request()->routeIs('clubuser')">
                         {{ __('Clubs') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('event.index')" :active="request()->routeIs('events')">
+                    <x-nav-link :href="route('eventuser.homepage')" :active="request()->routeIs('events')">
                         {{ __('Events') }}
                     </x-nav-link>
                 </div>
@@ -44,13 +44,13 @@
             </x-dropdown-link>
 
             @if(Auth::user()->usertype === 'president')
-                <x-dropdown-link :href="route('event.index')">
+                <x-dropdown-link :href="route('eventuser.homepage')">
                     {{ __('My Club Events') }}
                 </x-dropdown-link>
             @endif
 
             @if(Auth::user()->usertype === 'user')
-                <x-dropdown-link :href="route('event.index')">
+                <x-dropdown-link :href="route('eventuser.homepage')">
                     {{ __('My Events') }}
                 </x-dropdown-link>
             @endif
@@ -90,7 +90,7 @@
             <x-nav-link :href="route('clubuser_hariz.homepage')" :active="request()->routeIs('clubuser')">
                 {{ __('Clubs') }}
             </x-nav-link>
-            <x-nav-link :href="route('event.index')" :active="request()->routeIs('events')">
+            <x-nav-link :href="route('eventuser.homepage')" :active="request()->routeIs('events')">
                 {{ __('Events') }}
             </x-nav-link>
         </div>
@@ -108,13 +108,13 @@
                 </x-responsive-nav-link>
 
             @if(Auth::user()->usertype === 'president')
-                <x-responsive-nav-link :href="route('event.index')">
+                <x-responsive-nav-link :href="route('eventuser.homepage')">
                     {{ __('My Club Events') }}
                 </x-responsive-nav-link>
             @endif
 
             @if(Auth::user()->usertype === 'user')
-                <x-responsive-nav-link :href="route('event.index')">
+                <x-responsive-nav-link :href="route('eventuser.homepage')">
                     {{ __('My Events') }}
                 </x-responsive-nav-link>
             @endif

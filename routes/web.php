@@ -27,7 +27,8 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'president'])->group(function () {
-    Route::get('/post', [HomeController::class, 'post'])->name('post');
+    Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
+    Route::put('/events/{event}/update', [EventController::class, 'update'])->name('event.update');
 
     });
 
@@ -69,8 +70,8 @@ Route::middleware('auth')->group(function () {
     // web.php
     Route::get('/clubs/{club}', [ClubController::class, 'detail'])->name('clubuser_hariz.clubdetail');
 
-
-    Route::get('/events', [EventController::class, 'index'])->name('event.index');
+    Route::get('/eventhomepage', [EventController::class, 'homepage'])->name('eventuser.homepage');
+    Route::get('/events/{event}', [EventController::class, 'detail'])->name('event.index');
 });
 
 require __DIR__.'/auth.php';

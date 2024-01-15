@@ -1,119 +1,96 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Events') }}
         </h2>
     </x-slot>
-    @vite('resources/css/app.css')
 
-    <style>
+    <div class="py-12">
+        <div class="container mx-auto px-6 sm:px-8 md:px-10 lg:px-12">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form method="get" enctype="multipart/form-data" action="{{ route('event.edit',['event' => $event]) }}">
+                        <div class="flex flex-col sm:flex-row">
+                            <!-- First Section - Event Image -->
+                            <div class="sm:w-1/2">
+                                <img src="{{ $event->getImageURL() }}" alt="Event Image" class="w-90 h-auto rounded-lg mx-auto sm:mx-0">
+                            </div>
 
-        body {
-            margin: 0;
-            background: url('{{ asset('images/EventBackground.png') }}') center/cover no-repeat fixed;
-        }
+                            <!-- Second Section - Event Details Text -->
+                            <div class="sm:w-1/2 p-4">
+                                <h3 class="text-2xl font-semibold mb-4">{{ $event->eventName }}</h3>
 
-        .main-container {
-            display: flex;
-            flex-wrap: wrap;
-            background: linear-gradient(to right, #e6f7ff, #d8b4fe); /* Light blue to light purple */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 800px;
-        }       
+                                <!-- Label and Input for Date Start -->
+                                <div class="mb-4">
+                                    <label for="dateStart" class="block text-sm font-medium leading-6 text-gray-900">Date Start</label>
+                                    <input type="text" name="dateStart" id="dateStart" value="{{ $event->date_start_formatted }}" readonly class="block w-full rounded-md border-0 py-1.5 pl-7 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00">
+                                </div>
 
-        .event-name {
-            font-size: 35px; 
-            font-weight: bold;
-            margin-bottom: 10px;
-            width: 100%;
-        }
+                                <!-- Label and Input for Date End -->
+                                <div class="mb-4">
+                                    <label for="dateEnd" class="block text-sm font-medium leading-6 text-gray-900">Date End</label>
+                                    <input type="text" name="dateEnd" id="dateEnd" value="{{ $event->date_end_formatted }}" readonly class="block w-full rounded-md border-0 py-1.5 pl-7 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00">
+                                </div>
 
-        .container-flex {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-        }
+                                <!-- Label and Input for Time -->
+                                <div class="mb-4">
+                                    <label for="time" class="block text-sm font-medium leading-6 text-gray-900">Time</label>
+                                    <div class="flex">
+                                        <input type="text" name="timeStart" id="timeStart" value="{{ $event->time_start_formatted }}" readonly class="block w-16 rounded-md border-0 py-1.5 pl-2 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="00:00">
+                                        <span class="mx-2">-</span>
+                                        <input type="text" name="timeEnd" id="timeEnd" value="{{ $event->time_end_formatted }}" readonly class="block w-16 rounded-md border-0 py-1.5 pl-2 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="00:00">
+                                    </div>
+                                </div>
 
-        .image-container {
-            margin-top: 10px;
-            margin-right: 20px; /* Add padding between containers */
-            width: 48%; 
-        }
+                                <!-- Label and Input for Venue -->
+                                <div class="mb-4">
+                                    <label for="venue" class="block text-sm font-medium leading-6 text-gray-900">Venue</label>
+                                    <input type="text" name="venue" id="venue" value="{{ $event->venue }}" readonly class="block w-full rounded-md border-0 py-1.5 pl-7 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Venue">
+                                </div>
 
-        .image-container img {
-            width: 100%;
-            max-width: 100%; 
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+                                <!-- Label and Input for Category -->
+                                <div class="mb-4">
+                                    <label for="category" class="block text-sm font-medium leading-6 text-gray-900">Category</label>
+                                    <input type="text" name="category" id="category" value="{{ $event->category }}" readonly class="block w-full rounded-md border-0 py-1.5 pl-7 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Category">
+                                </div>
 
-        .details-container {
-            background-color: #F2ECE7; /* Light yellow*/
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
-            width: 48%; 
-        }
+                                <!-- Label and Input for Price -->
+                                <div class="mb-4">
+                                    <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
+                                    <div class="relative mt-3 rounded-md shadow-sm">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-gray-500 sm:text-sm">RM</span>
+                                        </div>
+                                        <input type="text" name="price" id="price" value="{{ $event->price }}" readonly class="block w-full rounded-md border-0 py-1.5 pl-12 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00">
+                                    </div>
+                                </div>
+                                
 
-        .details-container p {
-            margin-bottom: 10px;
-            font-size: 16px; 
-            color: #333;
-        }
+                                <!-- Label and Input for Description -->
+                                <div class="mb-4">
+                                    <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                                    <textarea name="description" id="description" readonly class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Event description">{{ $event->description }}</textarea>
+                                </div>
 
-        .details-container strong {
-            font-weight: bold; 
-        }
+                               @if(auth()->user()->usertype === 'president')
+    <div class="flex justify-end mt-4">
+        <button class="bg-purple-500 text-white py-2 px-4 rounded-md">Edit Page</button>
+    </div>
+@endif
 
-        .additional-details {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; /* Arrange additional details next to each other */
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-            width: 50%; 
-        }
 
-        .additional-details p {
-            font-size: 16px; 
-            color: #333;
-            margin: 0;
-        }
-
-        .additional-details strong {
-            font-weight: bold; 
-        }
-    </style>
-</head>
-<body>
-    <div class="main-container">
-        <div class="event-name"> {{ $event->eventName }}</div>
-
-        <div class="container-flex">
-            <div class="image-container">
-                <img src="{{ asset('images/projectstellar.png') }}" alt="Event Image">
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var textarea = document.getElementById('description');
+                                        textarea.style.height = 'auto';
+                                        textarea.style.height = (textarea.scrollHeight) + 'px';
+                                    });
+                                </script>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <div class="details-container">
-                <p><strong>Date Start:</strong> {{ $event->dateStartFormatted }}</p>
-                <p><strong>Date End:</strong> {{ $event->dateEndFormatted }}</p>
-                <p><strong>Time :</strong> {{ $event->timeStartFormatted }} - {{ $event-> timeEndFormatted }}</p>
-                <p><strong>Description:</strong> {{ $event->description }}</p>
-                <p><strong>Price:</strong> RM {{ $event->price }}</p>
-
-            </div>
-        </div>
-
-        <div class="additional-details">
-            <p><strong>Category:</strong> #{{ $event->category }} #{{ $event->subcategory1 }}</p>
-            <p><strong>Status:</strong> {{ $event->status }}</p>
         </div>
     </div>
-</body>
-
 </x-app-layout>
