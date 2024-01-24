@@ -50,7 +50,7 @@
             @endif
 
             @if(Auth::user()->usertype === 'user')
-                <x-dropdown-link :href="route('eventuser.homepage')">
+                <x-dropdown-link :href="route('api.index')">
                     {{ __('My Events') }}
                 </x-dropdown-link>
             @endif

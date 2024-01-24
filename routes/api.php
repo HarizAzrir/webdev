@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Spatie\GoogleCalendar\Event;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GoogleCalendarController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,21 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/google-calendar', 'App\Http\Controllers\GoogleCalendarController@index');
 
+Route::get('/calendar-home', function () {
+    return view('api/calendarpage');
+});
+// Example in api.php
+Route::get('/index', 'App\Http\Controllers\GoogleCalendarController@index')->name('api.index');
 
-
-Route::middleware('auth:api')->get('/gg', function () {
-        return view('/api/calendarlogin');
-          });
-
-Route::middleware('auth:api')->get('/calendar-home', function () {
-  return view('api/calendarpage');
-    });
-
-Route::middleware('auth:api')->get('event-view', 'App\Http\Controllers\ViewEventController@index');
-Route::middleware('auth:api')->post('event-view', 'App\Http\Controllers\ViewEventController@show');
-
-
-Route::middleware('auth:api')->post('/create-event', 'App\Http\Controllers\CalendarController@createEvent');
-Route::middleware('auth:api')->get('/edit-event', 'App\Http\Controllers\EditCalController@index');
-Route::middleware('auth:api')->post('/update-event', 'App\Http\Controllers\EditCalController@editEvent');

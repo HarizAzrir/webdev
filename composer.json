@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "nesbot/carbon": "^2.72",
+        "spatie/laravel-google-calendar": "^3.7",
         "twbs/bootstrap": "^5.3"
     },
     "require-dev": {
