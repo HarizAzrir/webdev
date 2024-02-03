@@ -1,25 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Calendar API</title>
+    <script>
+    var userEmail =@json($email);
+    </script>
+    
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="http://localhost:8000/js/google-calendar.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    <script src="{{ asset('http://localhost:8000/js/google-calendar.js') }}" defer></script>
+    <script src="https://apis.google.com/js/api.js" defer onload="gapiLoaded()"></script>
+    <script src="https://accounts.google.com/gsi/client" defer onload="gisLoaded()"></script>
+    
     <!-- Include jQuery -->
     
     <!-- Add this to the head section of your HTML -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js" defer></script>
 
     
 </head>
 
 <style>
-  
+    
+  html, nav {
+    height: 100%;
+    margin: 0;
+     /* This allows scrolling */
+   
+}
+
+html,body {
+    margin-bottom: 30px;
+    overflow: auto; /* This allows scrolling */
+}
+
+#content {
+            /* Adjust the height of FullCalendar as needed */
+            height: 100%;
+            z-index: 1;
+              /* Add some margin to the calendar if needed */
+        }
+
+#localContent {
+            /* Adjust the height of FullCalendar as needed */
+            height: 400px;
+            z-index: 1;
+              /* Add some margin to the calendar if needed */
+        }
 
       p {
           font-size: 24px;
@@ -50,6 +83,38 @@
           color: #EA4335; /* Google Red */
         }
 
+        body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f7fafc;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    section {
+        display:none;
+        margin-top: 20px;
+        width: 80%;
+        max-width: 600px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+    }
+
+    h2 {
+        color: #2d3748;
+        margin-bottom: 10px;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
     button {
         margin: 5px;
         padding: 10px 15px;
@@ -58,9 +123,10 @@
         border: none;
         border-radius: 5px;
         color: #fff;
+        transition: background-color 0.4s ease;
     }
 
-    #authorize_button {
+    #signin_button {
         background-color: #4CAF50; /* Green */
     }
 
@@ -78,6 +144,10 @@
 
     #signout_button {
         background-color: #555; /* Dark Gray */
+    }
+
+    button:hover {
+        filter: brightness(1.2);
     }
 
     #calendar {
@@ -126,25 +196,34 @@
     }
 </style>
 
+
 <body>
     <h1><span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l">l</span><span class="e">e</span> Calendar API</h1>
+    <div id="timer">Time remaining: <span id="timerValue">1:00:00</span></div>
+    
+    <nav>
+    <button id="signin_button" onclick="handleAuthClick()">Sign In</button>
+    <button id="list_button" onclick="listBookmarks( userEmail)">Show Upcoming Events in your local profile </button>
+    <button id="createAndList_button" onclick="handleCreateAndListClick()">Sync and show your simplified calendar</button>
+    <button id="showbookmarks_button" onclick="showBookmarks( userEmail)">Upload ongoing bookmarked events</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    </nav>
+    
+    <p>Local account: {{ $email }}</p>
     
 
-    <div>
-    <button id="authorize_button" onclick="handleAuthClick()">Sign In</button>
-    <button id="create_button" onclick="handleCreateClick()">Create</button>
-    <button id="list_button" onclick="handleList()">Upcoming Events</button>
-    <button id="cre_button" onclick="handleCreClick()">Sync all incoming events to your calendar</button>
-    <button id="createAndList_button" onclick="handleCreateAndListClick()">sync and show your simplified calendar</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
-
+   
+    
     <script>
-        document.getElementById('authorize_button').style.visibility = 'hidden';
+        document.getElementById('signin_button').style.visibility = 'hidden';
         document.getElementById('signout_button').style.visibility = 'hidden';
-        document.getElementById('create_button').style.visibility = 'hidden';
         document.getElementById('list_button').style.visibility = 'hidden';
-        document.getElementById('cre_button').style.visibility = 'hidden';
         document.getElementById('createAndList_button').style.visibility = 'hidden';
+        document.getElementById('showbookmarks_button').style.visibility = 'hidden';
+        document.addEventListener("DOMContentLoaded", function() {
+            gapiLoaded();
+            gisLoaded();
+        });
     </script>
 
     </div>
@@ -152,7 +231,10 @@
     <div id="content"></div>
     <div id="localContent"></div>
 
+
   
 
 </body>
+
+
 </html>

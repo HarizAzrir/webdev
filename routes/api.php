@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\GoogleCalendar\Event;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GoogleCalendarController;
-
+use App\Http\Controllers\BookmarkController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,11 +20,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+
 Route::get('/google-calendar', 'App\Http\Controllers\GoogleCalendarController@index');
 
 Route::get('/calendar-home', function () {
-    return view('api/calendarpage');
-});
-// Example in api.php
-Route::get('/index', 'App\Http\Controllers\GoogleCalendarController@index')->name('api.index');
+  return view('api/calendarpage');
+    });
+
+Route::get('/index/{email?}', 'App\Http\Controllers\GoogleCalendarController@index')->name('api.index');
+
+Route::get('/show-bookmarks', 'App\Http\Controllers\BookmarkController@getBookmarks');
 

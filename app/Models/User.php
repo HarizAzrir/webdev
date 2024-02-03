@@ -51,4 +51,10 @@ class User extends Authenticatable
         }
         return "images/blankprofile.png";
     }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class, 'user_id');
+    }
+
 }

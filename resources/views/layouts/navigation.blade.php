@@ -49,8 +49,8 @@
                 </x-dropdown-link>
             @endif
 
-            @if(Auth::user()->usertype === 'user')
-                <x-dropdown-link :href="route('api.index')">
+            @if(Auth::check() && Auth::user()->usertype === 'user')
+                <x-dropdown-link :href="route('api.index', ['email' => Auth::user()->email])">
                     {{ __('My Events') }}
                 </x-dropdown-link>
             @endif

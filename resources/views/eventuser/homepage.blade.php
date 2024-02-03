@@ -8,32 +8,55 @@
 
             <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 <div class="text-center p-10">
-    <h1 class="font-bold text-4xl mb-4">Responsive Product card grid</h1>
-    <h1 class="text-3xl">Tailwind CSS</h1>
+    <h1 class="font-bold text-4xl mb-4">Upcoming Events</h1>
+    <h1 class="text-3xl">See What is Happening in MMU</h1>
 </div>
 
 <!-- ✅ Grid Section - Starts Here 👇 -->
 <section id="Projects"
     class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-
     <!-- Loop through each event in the collection -->
-    @foreach($event as $event)
-        <!-- Product card starts here -->
-        <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+    @foreach($events as $event)
+    <!-- Product card starts here #-->
+        <div class="w-72 bg-gradient-to-tr from-[#FFF6E6] via-[#FFDAE7] to-[#C2CCFF] shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
             <a href="{{ route('event.index', ['event' => $event->id]) }}">
-
                 <!-- Use the event's image URL or fallback to a default image -->
-                <img src="{{ $event->getImageURL() }}"
+                <img src="{{ $event->image }}"
                     alt="{{ $event->eventName }}" class="h-80 w-72 object-cover rounded-t-xl" />
 
                 <div class="px-4 py-3 w-72">
-                    <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                @php
+                    $categoryColor = '';
+                    switch ($event->category) {
+                        case 'Charity':
+                            $categoryColor = 'bg-orange-500';
+                            break;
+                        case 'Concert':
+                            $categoryColor = 'bg-purple-500';
+                            break;
+                        case 'Workshop':
+                            $categoryColor = 'bg-blue-500';
+                            break;
+                        case 'Entertainment':
+                            $categoryColor = 'bg-black text-white';
+                            break;
+                        case 'Sports':
+                            $categoryColor = 'bg-pink-500';
+                            break;
+                        default:
+                            $categoryColor = 'bg-gray-500';
+                            break;
+                    }
+                @endphp
+
+                <span class="text-white font-bold mr-3 uppercase text-xs rounded-lg px-2 py-1 {{ $categoryColor }}">{{ $event->category }}</span>
+                <!-- Rest of your card content -->
                     <p class="text-lg font-bold text-black truncate block capitalize">{{ $event->eventName }}</p>
                     <div class="flex items-center">
-                        <p class="text-lg font-semibold text-black cursor-auto my-3">${{ $event->price }}</p>
-                        <del>
-                            <p class="text-sm text-gray-600 cursor-auto ml-2">${{ $event->originalPrice }}</p>
-                        </del>
+                        <p class="text-lg font-semibold text-black cursor-auto my-3">RM{{ $event->price }}</p>
+                        
+                        <p class="text-sm text-gray-600 cursor-auto ml-2">{{ $event->status }}</p>
+                        
                         <div class="ml-auto">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                 class="bi bi-bag-plus" viewBox="0 0 16 16">

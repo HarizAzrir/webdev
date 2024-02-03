@@ -13,7 +13,7 @@ class Club extends Model
     protected $fillable = [
         "clubname",
         "club_nickname",
-        "president",
+        "user_id",
         "about",
         "email",
         "instagram",
@@ -30,5 +30,14 @@ class Club extends Model
         return "images/blankprofile.png";
     }
 
-    
+     // Define the relationship with the User model
+     public function user()
+     {
+         return $this->belongsTo(User::class, 'user_id');
+     }
+
+     public function president()
+     {
+         return $this->belongsTo(User::class, 'user_id');
+     }
 }

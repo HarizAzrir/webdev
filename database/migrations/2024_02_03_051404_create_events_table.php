@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('subcategory1');
             $table->string('status');
             $table->string('image');
+            $table->foreignId('club_id')->constrained('clubs');
             // $table->timestamps(); // Uncomment if you want timestamps
         });
     }
@@ -33,5 +34,11 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('events');
+
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropForeign(['club_id']);
+            $table->dropColumn('club_id');
+        });
+        
     }
 };

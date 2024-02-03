@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\GoogleCalendarController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,12 +32,15 @@ Route::get('/', function () {
 Route::middleware(['auth', 'president'])->group(function () {
     Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
     Route::put('/events/{event}/update', [EventController::class, 'update'])->name('event.update');
+    Route::post('/event/{eventId}/bookmark', [BookmarkController::class, 'index'])->name('bookmark.index');
 
     });
 
 Route::middleware(['auth', 'admin'])->group(function () {
 // Route::get('/adminhomepage', [HomeController::class, 'index'])->name('adminhomepage');
-Route::get('/userhomepage', [HomeController::class, 'userhomepage'])->name('dashboard');
+//Route::get('/userhomepage', [HomeController::class, 'userhomepage'])->name('dashboard');
+Route::get('/userhomepage', [HomeController::class, 'userhomepage'])->name('userhomepage');
+
 
 Route::get('/useradmin', [UserController::class, 'index'])->name('useradmin.index');
 Route::get('/useradmin/create', [UserController::class, 'create'])->name('useradmin.create');
@@ -72,6 +78,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/eventhomepage', [EventController::class, 'homepage'])->name('eventuser.homepage');
     Route::get('/events/{event}', [EventController::class, 'detail'])->name('event.index');
+
+    Route::post('/events/{event}/bookmark', [EventController::class, 'bookmark'])->name('event.bookmark');
+
+
+    Route::get('/bookmarks', [BookmarkController::class, 'view'])->name('bookmarks.view');
+
+    
+
+
+// Route for showing the forgot password form
+Route::get('/forgot-password', 'ForgotPasswordController@showForgotPasswordForm')->name('password.request');
 });
 
 require __DIR__.'/auth.php';

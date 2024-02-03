@@ -30,9 +30,9 @@ class Event extends Model
 
     public function getImageURL(){
         if($this->image){
-            return url('storage/' .$this->image);
+            return url($this->image);
         }
-        return "images/blankprofile.png";
+        return "image";
     }
 
 
@@ -52,8 +52,25 @@ class Event extends Model
     }
 
     public function getTimeEndFormattedAttribute()
-{
-    return Carbon::parse($this->attributes['timeEnd'])->format('H:i');
-}
+    {
+        return Carbon::parse($this->attributes['timeEnd'])->format('H:i');
+    }
+
+    // Event.php
+    public function bookmarkedBy()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks', 'event_id', 'user_id')->withTimestamps();
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+    
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'club_id');
+    }
+
 
 }

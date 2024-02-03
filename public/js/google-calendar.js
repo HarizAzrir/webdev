@@ -17,7 +17,8 @@ const SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
-
+let timerInterval;
+console.log('User email:', userEmail);
 
 
 /**
@@ -58,7 +59,7 @@ function gisLoaded() {
  */
 function maybeEnableButtons() {
     if (gapiInited && gisInited) {
-        document.getElementById('authorize_button').style.visibility = 'visible';
+        document.getElementById('signin_button').style.visibility = 'visible';
     }
 }
 
@@ -80,11 +81,12 @@ async function handleAuthClick() {
         if (resp.error !== undefined) {
             throw resp;
         }
+        document.getElementById('signin_button').style.visibility = 'hidden';
         document.getElementById('signout_button').style.visibility = 'visible';
-        document.getElementById('create_button').style.visibility = 'visible';
         document.getElementById('list_button').style.visibility = 'visible';
-        document.getElementById('cre_button').style.visibility = 'visible';
         document.getElementById('createAndList_button').style.visibility = 'visible';
+        document.getElementById('showbookmarks_button').style.visibility = 'visible';
+        startTimer(3600);
     };
 
     if (gapi.client.getToken() === null) {
@@ -95,31 +97,113 @@ async function handleAuthClick() {
         // Skip display of account chooser and consent dialog for an existing session.
         tokenClient.requestAccessToken({ prompt: 'none' });
     }
+    setTimeout(function () {
+        // Assuming authentication is successful
+        callback();
+    }, 3000);
+}
+
+function startTimer(durationInSeconds) {
+    let timerDisplay = document.getElementById('timerValue');
+
+    let duration = durationInSeconds;
+    let minutes, seconds;
+
+    timerInterval = setInterval(function () {
+        minutes = parseInt(duration / 60, 10);
+        seconds = parseInt(duration % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timerDisplay.textContent = minutes + ":" + seconds;
+
+        if (--duration < 0) {
+            clearInterval(timerInterval);
+            // Call a function or perform actions when the timer reaches zero
+            timerDisplay.textContent = "Login Expired";
+            handleTimerEnd();
+        }
+    }, 1000);
+}
+
+
+function handleTimerEnd() {
+    // Stop the timer interval
+    clearInterval(timerInterval);
+
+    // Perform actions when the timer ends, such as showing an alert
+    alert('Login Expired');
+}
+
+function showSections() {
+    document.getElementById('section1').style.display = 'block';
+    document.getElementById('section2').style.display = 'block';
+    document.getElementById('section3').style.display = 'block';
+    document.getElementById('signout_button').style.visibility = 'visible';
 }
 
 async function handleList() {
     await listUpcomingEvents();
 }
 
-async function handleCreateClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw resp;
-        }
-        await createEvent();
-    };
 
-    getEmail().then(email => {
-        if (gapi.client.getToken() === null) {
-            // Prompt the user to select a Google Account and ask for consent to share their data
-            // when establishing a new session.
-            tokenClient.requestAccessToken({ prompt: 'consent', login_hint: email });
-        } else {
-            // Skip display of account chooser and consent dialog for an existing session.
-            tokenClient.requestAccessToken({ prompt: 'none', login_hint: email });
-        }
+
+
+function displayEventsTable(tableId, events, title) {
+    // Find the HTML element where you want to display the table
+    const tableContainer = document.getElementById(tableId);
+
+    // Create a table element
+    const table = document.createElement('table');
+    table.className = 'event-table';
+
+    // Add a title row
+    const titleRow = document.createElement('tr');
+    const titleCell = document.createElement('th');
+    titleCell.colSpan = 3; // Adjust the number of columns as needed
+    titleCell.textContent = title;
+    titleRow.appendChild(titleCell);
+    table.appendChild(titleRow);
+
+    // Add header row
+    const headerRow = document.createElement('tr');
+    ['User ID', 'Event ID', 'User Details', 'Event Details'].forEach(headerText => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
     });
+    table.appendChild(headerRow);
+
+    // Add rows for each event
+    events.forEach(event => {
+        const row = document.createElement('tr');
+        ['user_id', 'event_id', 'user_details', 'event_details'].forEach(key => {
+            const cell = document.createElement('td');
+
+            // Handle user_details and event_details objects
+            if (key.includes('_details')) {
+                const subObjectKeys = Object.keys(event[key]);
+                subObjectKeys.forEach(subKey => {
+                    const subCell = document.createElement('div');
+                    subCell.textContent = `${subKey}: ${event[key][subKey]}`;
+                    cell.appendChild(subCell);
+                });
+            } else {
+                cell.textContent = event[key];
+            }
+
+            row.appendChild(cell);
+        });
+        table.appendChild(row);
+    });
+
+    // Add the table to the container
+    tableContainer.appendChild(table);
 }
+
+
+
 
 /**
  * Sign out the user upon button click.
@@ -130,88 +214,85 @@ function handleSignoutClick() {
         google.accounts.oauth2.revoke(token.access_token);
         gapi.client.setToken('');
         document.getElementById('content').innerText = '';
-        document.getElementById('authorize_button').innerText = 'Authorize';
+        document.getElementById('signin_button').innerText = 'Sign In';
+        document.getElementById('signin_button').style.visibility = 'visible';
+        document.getElementById('list_button').style.visibility = 'hidden';
+        document.getElementById('createAndList_button').style.visibility = 'hidden';
+        document.getElementById('showbookmarks_button').style.visibility = 'hidden';
         document.getElementById('signout_button').style.visibility = 'hidden';
+        clearInterval(timerInterval);
+        document.getElementById('timerValue').textContent = '60:00';
     }
 }
 
-async function listUpcomingEvents() {
+let existingTable;
+let uniqueEventNames = new Set();
+async function listUpcomingEvents(currentEventDetails) {
     try {
-        const request = {
-            'calendarId': 'primary',
-            'timeMin': (new Date()).toISOString(),
-            'showDeleted': false,
-            'singleEvents': true,
-            'maxResults': 10,
-            'orderBy': 'startTime',
-        };
 
-        const response = await gapi.client.calendar.events.list(request);
-        const events = response.result.items;
+        if (typeof currentEventDetails !== 'object' || Array.isArray(currentEventDetails)) {
+            throw new Error('Invalid data format for currentEventDetails');
+        }
 
-        if (!events || events.length === 0) {
-            document.getElementById('content').innerHTML = '<p>No upcoming events found.</p>';
+        const eventsArray = [currentEventDetails];
+
+        // Check if there are any events
+        if (!eventsArray || eventsArray.length === 0) {
+            document.getElementById('content').innerHTML = '<p>No events found.</p>';
             return;
         }
 
         // Create a styled table
-        const table = document.createElement('table');
-        table.className = 'event-table';
-        table.innerHTML = `
-            <thead>
-                <tr>
-                    <th>Event</th>
-                    <th>Start Date</th>
-                    <th>Start Time</th>
-                    <th>End Date</th>
-                    <th>End Time</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        `;
+        console.log("33445",eventsArray);
+        if (!existingTable) {
+            existingTable = document.createElement('table');
+            existingTable.className = 'event-table';
+            existingTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Start Date</th>
+                        <th>Start Time</th>
+                        <th>End Date</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+            document.getElementById('content').innerHTML = '<p>Events:</p>';
+            document.getElementById('content').appendChild(existingTable);
+        }
 
-        const tbody = table.querySelector('tbody');
+        const tbody = existingTable.querySelector('tbody');
 
         // Populate the table with events
-        events.forEach(event => {
+        eventsArray.forEach(event => {
+            // Check for duplicate event name
+            if (uniqueEventNames.has(event.eventName)) {
+                // Display alert for duplicate event
+                alert(`Duplicate event found: ${event.eventName}`);
+            } else {
             const row = document.createElement('tr');
-        
+
             const eventNameCell = document.createElement('td');
             eventNameCell.className = 'event-name';
-            eventNameCell.textContent = event.summary;
+            eventNameCell.textContent = event.eventName;
 
-            eventNameCell.setAttribute('contenteditable', 'true');
-            eventNameCell.addEventListener('input', function() {
-            updateEventData(events, eventNameCell.textContent);
-            });
-
-            eventNameCell.onclick = () => redirectToEventDate(event.start.dateTime);
-            eventNameCell.style.cursor = 'pointer'; // Change cursor to pointer
-
-            // Add styles for hover effect
-            eventNameCell.onmouseover = function() {
-            eventNameCell.style.color = 'blue';
-            };
-
-            eventNameCell.onmouseout = function() {
-            eventNameCell.style.color = ''; // Reset to default color
-            };
-        
             const startDateCell = document.createElement('td');
             startDateCell.className = 'start-date';
-            startDateCell.textContent = formatDate(event.start.dateTime);
-        
+            startDateCell.textContent = formatDate(event.dateStart);
+
             const startTimeCell = document.createElement('td');
             startTimeCell.className = 'start-time';
-            startTimeCell.textContent = formatTime(event.start.dateTime);
-        
+            startTimeCell.textContent = formatTime(event.timeStart);
+
             const endDateCell = document.createElement('td');
             endDateCell.className = 'end-date';
-            endDateCell.textContent = formatDate(event.end.dateTime);
-        
+            endDateCell.textContent = formatDate(event.dateEnd);
+
             const endTimeCell = document.createElement('td');
             endTimeCell.className = 'end-time';
-            endTimeCell.textContent = formatTime(event.end.dateTime);
+            endTimeCell.textContent = formatTime(event.timeEnd);
 
             row.appendChild(eventNameCell);
             row.appendChild(startDateCell);
@@ -220,17 +301,14 @@ async function listUpcomingEvents() {
             row.appendChild(endTimeCell);
 
             tbody.appendChild(row);
-        });
 
-        // Display the table in the 'content' element
-        const contentElement = document.getElementById('content');
-        contentElement.innerHTML = '<p>Upcoming Events:</p>';
-        contentElement.appendChild(table);
-        return events;
+            // Add the event name to the set
+            uniqueEventNames.add(event.eventName);
+            }
+        });
     } catch (err) {
-        console.error('Error fetching upcoming events:', err.message);
-        document.getElementById('content').innerText = 'Error fetching upcoming events.';
-        return [];
+        console.error('Error displaying events:', err.message);
+        document.getElementById('content').innerText = 'Error displaying events.';
     }
 }
 
@@ -271,163 +349,123 @@ async function updateEventData(eventIds, updatedEvent) {
 }
 
 
-// Function to sync updated data back to Google Calendar
-async function syncUpdatedDataToGoogleCalendar(updatedEvent) {
-    try {
-        const request = {
-            'calendarId': 'primary',
-            'eventId': updatedEvent.id,
-            'resource': updatedEvent
-        };
-
-        // Update the event on Google Calendar
-        const response = await gapi.client.calendar.events.update(request);
-
-        console.log('Event updated:', response);
-
-        // Optionally, you can re-fetch the updated events from Google Calendar
-        // and update your local view if needed
-        // const updatedEvents = await listUpcomingEvents();
-        // displayUpdatedEvents(updatedEvents);
-    } catch (err) {
-        console.error('Error updating event:', err.message);
-        // Handle error as needed
-    }
-}
-
 
 function formatDate(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-function formatTime(dateTimeString) {
-    const date = new Date(dateTimeString);
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+function formatTime(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':');
+    const formattedHours = parseInt(hours, 10) % 12 || 12; // Convert 24-hour format to 12-hour format
+    const period = parseInt(hours, 10) < 12 ? 'AM' : 'PM';
+
+    return `${formattedHours}:${minutes} ${period}`;
 }
 
 
 
-async function createEvent(dataArray) {
+
+async function createEvent(eventData) {
     let responses = [];
+
+    // Check if eventData is valid
+    if (!eventData || !eventData.eventName) {
+        console.log('Invalid eventData:', eventData);
+        return responses;
+    }
+
     try {
-        for (const eventData of dataArray) {
-            let eventName = eventData.eventName;
-            let dateStart = eventData.dateStart;
-            let dateEnd = eventData.dateEnd;
-            let timeStart = eventData.timeStart;
-            let timeEnd = eventData.timeEnd;
-            let venue = eventData.venue;
-            let description = eventData.description;
+        let eventName = eventData.eventName;
+        let dateStart = eventData.dateStart;
+        let dateEnd = eventData.dateEnd;
+        let timeStart = eventData.timeStart;
+        let timeEnd = eventData.timeEnd;
+        let venue = eventData.venue;
+        let description = eventData.description;
 
-            console.log('Event Name:', eventName);
-            console.log('Date Start:', dateStart);
-            console.log('Date End:', dateEnd);
-            console.log('Time Start:', timeStart);
-            console.log('Time End:', timeEnd);
-            console.log('Venue:', venue);
-            console.log('Description:', description);
+        console.log('Event Name:', eventName);
+        console.log('Date Start:', dateStart);
+        console.log('Date End:', dateEnd);
+        console.log('Time Start:', timeStart);
+        console.log('Time End:', timeEnd);
+        console.log('Venue:', venue);
+        console.log('Description:', description);
 
-            const event = {
-                'summary': eventName,
-                'location': venue,
-                'description': description,
-                'start': {
-                    'dateTime': `${dateStart}T${timeStart}`,
-                    'timeZone': 'Asia/Kuala_Lumpur',
-                },
-                'end': {
-                    'dateTime': `${dateEnd}T${timeEnd}`,
-                    'timeZone': 'Asia/Kuala_Lumpur',
-                },
-                'reminders': {
-                    'useDefault': false,
-                    'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},
-                        {'method': 'popup', 'minutes': 60},
-                    ],
-                },
-            };
-
-            const request = gapi.client.calendar.events.insert({
-                'calendarId': 'primary',
-                'resource': event,
-            });
-
-            const response = await request.execute(event => console.log('Event created: ' + event.htmlLink));
-            responses.push(response);
+        const existingEvent = await findExistingEvent(eventName);
+        if (existingEvent) {
+            // Display alert if an event with the same eventName already exists
+            alert(`An event with the name "${eventName}" already exists in your Google Calendar.`);
+            return responses;
         }
+
+        const event = {
+            'summary': eventName,
+            'location': venue,
+            'description': description,
+            'start': {
+                'dateTime': `${dateStart}T${timeStart}`,
+                'timeZone': 'Asia/Kuala_Lumpur',
+            },
+            'end': {
+                'dateTime': `${dateEnd}T${timeEnd}`,
+                'timeZone': 'Asia/Kuala_Lumpur',
+            },
+            'reminders': {
+                'useDefault': false,
+                'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                    {'method': 'popup', 'minutes': 60},
+                ],
+            },
+        };
+
+        const request = gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': event,
+        });
+
+        const response = await request.execute(event => console.log('Event created: ' + event.htmlLink));
+        responses.push(response);
     } catch (err) {
         console.log('Error: ' + err.message);
-        return;
+        return responses;
     }
+
     return responses;
 }
 
-
-async function fetchEventData() {
+async function findExistingEvent(eventName) {
     try {
-        let response = await fetch('http://localhost:8000/scripts/fetch_event.php');
-
-        if (!response.ok) {
-            alert(`Could not connect to the database. Status: ${response.status}`);
-            return `Could not connect to the database. Status: ${response.status}`;
-        } else {
-            let data = await response.text();
-            console.log('Received data:', data);
-            let dataArray;
-            try {
-                dataArray = JSON.parse(data);
-            } catch (parseError) {
-                console.error('Error parsing JSON:', parseError);
-                return 'Error parsing JSON';
-            }
-            if (!Array.isArray(dataArray)) {
-                console.error('Data is not an array:', dataArray);
-                return 'Data is not an array';
-            }
-            return dataArray;
-        }
-    } catch (error) {
-        alert('Fetch failed: ' + error);
-        return 'Fetch failed: ' + error;
-    }
-}
-
-
-async function handleCreClick() {
-    try {
-        const email = await getEmail();
-        tokenClient.callback = async (resp) => {
-            if (resp.error !== undefined) {
-                throw resp;
-            }
-
-            document.getElementById('signout_button').style.visibility = 'visible';
-
-            const accessToken = gapi.client.getToken().access_token;
-
-            let dataArray = await fetchEventData();
-            await createEvent(dataArray);
+        const request = {
+            'calendarId': 'primary',
+            'q': eventName,
+            'singleEvents': true,
+            'orderBy': 'startTime',
         };
 
-        
-        if (gapi.client.getToken() === null) {
-            await tokenClient.requestAccessToken({ prompt: 'consent', login_hint: email });
-        } else {
-            await tokenClient.requestAccessToken({ prompt: 'none', login_hint: email });
-        }
-    } catch (error) {
-        console.error('Error in handleCreClick:', error);
-        // Handle the error, e.g., show an error message to the user
+        const response = await gapi.client.calendar.events.list(request);
+        const events = response.result.items;
+
+        return events.length > 0 ? events[0] : null;
+    } catch (err) {
+        console.error('Error finding existing event:', err.message);
+        return null;
     }
 }
+
+
+
 
 async function listLocalEvents() {
     try {
+         // Set timeMin to the beginning of the year before the current year
+         const currentTime = new Date();
+         const beginningOfPreviousYear = new Date(currentTime.getFullYear() - 1, 0, 1, 0, 0, 0);
+         
         const localEvents = await gapi.client.calendar.events.list({
             'calendarId': 'primary',
-            'timeMin': (new Date()).toISOString(),
+            'timeMin': beginningOfPreviousYear.toISOString(),
             'showDeleted': false,
             'singleEvents': true,
             'maxResults': 10,
@@ -441,15 +479,55 @@ async function listLocalEvents() {
     }
 }
 
-async function handleCreateAndListClick() {
+function handleEventClick(info) {
+    console.log('info.event:', info.event);
     
+}
+
+let currentView = null;
+let fullCalendarInstance;
+async function handleCreateAndListClick() {
+    destroyCurrentView();
+
+
+    // Remove the existing #localContent element
+    const localContentElement = document.getElementById('localContent');
+    if (localContentElement) {
+       localContentElement.parentNode.removeChild(localContentElement);
+    }
+    // if (fullCalendarInstance) {
+    //     fullCalendarInstance.fullCalendar('destroy');
+    // }
+
+      // Create a new container for FullCalendar
+    const newLocalContentElement = document.createElement('div');
+    newLocalContentElement.id = 'localContent';
+    document.body.appendChild(newLocalContentElement);
+
+//     const newLocalContentElement = $('<div id="localContent"></div>').appendTo('body');
+//   // Remove the #localContent element from the DOM
+//   const localContentElement = document.getElementById('localContent');
+//   localContentElement.parentNode.removeChild(localContentElement);
+
+//    // Recreate the #localContent element
+//    const newLocalContentElement = document.createElement('div');
+//    newLocalContentElement.id = 'localContent';
+//    document.body.appendChild(newLocalContentElement);
+
+    // Recall the function to list local events
+    await listLocalEvents().then((localEvents) => {
+        // Display local events in the HTML
+        displayLocalEvents(localEvents, 'localContent');
+        currentView = 'calendar';
+    });
 
     // List local events
     const localEvents = await listLocalEvents();
     console.log('Local events:', localEvents);
 
     // Display local events in the HTML
-    displayLocalEvents(localEvents);
+    displayLocalEvents(localEvents,'localContent');
+    currentView = 'calendar';
 }
 
 function displayLocalEvents(events) {
@@ -476,11 +554,38 @@ function displayLocalEvents(events) {
                 redirectToEventDate(event.start.format());
             });
         },
-        editable: true,
-        eventDrop: function (event, delta, revertFunc) {
-            // Handle event drop if needed
-        }
+        
     });
+}
+
+
+// Function to destroy the current view
+function destroyCurrentView() {
+    if (currentView === 'table') {
+        // Destroy the table 
+        destroyTable();
+    } else if (currentView === 'calendar') {
+        // Destroy the FullCalendar instance
+        destroyCalendarInstance('localContent');
+    }
+
+    // Reset the current view
+    currentView = null;
+}
+
+// Function to destroy the table
+function destroyTable() {
+    const tableElement = document.getElementById('content');
+    if (tableElement) {
+        tableElement.innerHTML = ''; // Remove the table content
+    }
+}
+
+function destroyCalendarInstance() {
+    const fullCalendarInstance = document.getElementById('localcontent');
+if (fullCalendarInstance) {
+    fullCalendarInstance.innerHTML = '';;
+    }
 }
 
 function redirectToEventDate(eventDate) {
@@ -494,9 +599,126 @@ function redirectToEventDate(eventDate) {
     localCalendar.fullCalendar('gotoDate', formattedDate);
 }
 
-function handleEventClick(info) {
-    console.log('info.event:', info.event);
-    // Handle click event if needed, but don't include deletion logic
+
+
+async function showBookmarks(userEmail) {
+    const googleAccountEmail = await getEmail();
+
+    const response = await fetch('http://127.0.0.1:8000/api/show-bookmarks');
+    const data = await response.json();
+
+    // Extract past and current events from the data
+    const { past_events, current_events } = data;
+
+    // Compare emails and perform actions
+    if (userEmail === googleAccountEmail) {
+        // Pass current_events to createEvent
+        console.log ("This This This", current_events);
+        if (Array.isArray(current_events)) {
+            current_events.forEach(async currentEvent => {
+                if (currentEvent.user_details && currentEvent.user_details.email) {
+                    const userEventEmail = currentEvent.user_details.email;
+        
+                    // Check if the user email matches the provided userEmail
+                    if (userEventEmail === userEmail) {
+                        // Perform event synchronization for the specific user
+                        console.log ("22222", currentEvent.event_details);
+                        await createEvent(currentEvent.event_details);
+                    }
+                }
+            });
+        } else {
+            console.error('Current events is not an array:', current_events.event_details);
+        }
+    } else {
+        console.log(googleAccountEmail);
+        console.log(userEmail);
+        const confirmation = window.confirm(`The Google account email '${googleAccountEmail}' you selected is not the same as your local email account '${userEmail}'. Do you want to proceed anyway?`);
+        if (confirmation) {
+            // Proceed with the code
+            if (Array.isArray(current_events)) {
+                current_events.forEach(async currentEvent => {
+                    if (currentEvent.user_details && currentEvent.user_details.email) {
+                        const userEventEmail = currentEvent.user_details.email;
+            
+                        // Check if the user email matches the provided userEmail
+                        if (userEventEmail === userEmail) {
+                            // Perform event synchronization for the specific user
+                            console.log ("22222", currentEvent.event_details);
+                            await createEvent(currentEvent.event_details);
+                        }
+                    }
+                });
+            } else {
+                console.error('Current events is not an array:', current_events.event_details);
+            }
+        } else {
+            // Cancel execution
+            console.log("User canceled the operation");
+        }
+    }
+}
+ 
+
+async function listBookmarks(userEmail) {
+    const googleAccountEmail = await getEmail();
+
+    const response = await fetch('http://127.0.0.1:8000/api/show-bookmarks');
+    const data = await response.json();
+
+    // Extract past and current events from the data
+    const { past_events, current_events } = data;
+
+    // Compare emails and perform actions
+    if (userEmail === googleAccountEmail) {
+        // Pass current_events to createEvent
+        console.log ("This This This", current_events);
+        if (Array.isArray(current_events)) {
+            current_events.forEach(async currentEvent => {
+                if (currentEvent.user_details && currentEvent.user_details.email) {
+                    const userEventEmail = currentEvent.user_details.email;
+        
+                    // Check if the user email matches the provided userEmail
+                    if (userEventEmail === userEmail) {
+                        destroyCurrentView();
+                        // Perform event synchronization for the specific user
+                        console.log ("22222", currentEvent.event_details);
+                        await listUpcomingEvents(currentEvent.event_details);
+                        currentView = 'table';
+                    }
+                }
+            });
+        } else {
+            console.error('Current events is not an array:', current_events.event_details);
+        }
+    } else {
+        console.log(googleAccountEmail);
+        console.log(userEmail);
+        const confirmation = window.confirm(`The Google account email '${googleAccountEmail}' you selected is not the same as your local email account '${userEmail}'. Do you want to proceed anyway?`);
+        if (confirmation) {
+            // Proceed with the code
+            if (Array.isArray(current_events)) {
+                current_events.forEach(async currentEvent => {
+                    if (currentEvent.user_details && currentEvent.user_details.email) {
+                        const userEventEmail = currentEvent.user_details.email;
+            
+                        // Check if the user email matches the provided userEmail
+                        if (userEventEmail === userEmail) {
+                            destroyCurrentView();
+                            // Perform event synchronization for the specific user
+                            console.log ("22222", currentEvent.event_details);
+                            return listUpcomingEvents(currentEvent.event_details);
+                            currentView = 'table';
+                        }
+                    }
+                });
+            } else {
+                console.error('Current events is not an array:', current_events.event_details);
+            }
+        } else {
+            // Cancel execution
+            console.log("User canceled the operation");
+        }
+    }
 }
 
-   

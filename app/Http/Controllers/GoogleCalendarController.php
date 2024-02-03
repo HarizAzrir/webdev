@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class GoogleCalendarController extends Controller
 {
-    public function index()
+    public function index(Request $request, $email = null)
     {
-        return view('api/index');
+        return view('api/index', ['email' => $email]);
     }
 }

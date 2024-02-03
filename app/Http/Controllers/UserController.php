@@ -92,4 +92,10 @@ public function destroy(User $user) {
     return redirect(route('useradmin.index'))->with('success','User has been deleted');
 }
 
+
+public function bookmarks()
+    {
+        return $this->hasMany(BookmarkController::class, 'user_id');
+    }
+
 }

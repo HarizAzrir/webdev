@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('clubs', function (Blueprint $table) {
             $table->id(); // This creates an auto-incrementing primary key column
+            $table->foreignId('user_id')->constrained('users');
             $table->string('clubname');
             $table->string('club_nickname');
-            $table->string('president');
             
             // Change the 'about' column to a text type if it can store larger text content
             $table->text('about');
@@ -26,6 +26,7 @@ return new class extends Migration
             // Change them to text or a suitable data type based on your needs
             $table->text('instagram');
             $table->text('contact_number');
+            $table->string('image')->nullable();
             $table->timestamps();
         
         });        
@@ -36,6 +37,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clubs');
+        Schema::table('clubs', function (Blueprint $table) {
+            $table->dropColumn('image');
+        });
     }
 };

@@ -18,6 +18,8 @@
 
              <!-- Display club about text -->
             <div id="aboutSection">
+                <p class="text-lg mb-6">{{ optional($club->user)->name }}</p>
+
                 <p class="text-lg mb-6">{{ $club->about }}</p>
             </div>
 
