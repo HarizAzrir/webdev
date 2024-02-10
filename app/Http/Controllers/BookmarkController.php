@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bookmark;
+Use App\Models\User;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +99,7 @@ class BookmarkController extends Controller
         // Delete a bookmark
         $bookmark->delete();
 
-        return redirect()->route('bookmarks.index')->with('success', 'Bookmark deleted successfully!');
+        return redirect()->route('api.index')->with('success', 'Bookmark deleted successfully!');
     }
 
     public function getBookmarks()

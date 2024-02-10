@@ -62,9 +62,8 @@
         <!-- Content -->
         <div class="flex-1 ml-4 mt-8">
            <!-- Main Content -->
-    <div class="flex flex-col flex-1 overflow-y-auto p-4 md:ml-4 mr-12">
-       
-        <h1 class="text-2xl font-bold mb-4">Users</h1>
+    <div class="flex flex-col flex-1 overflow-y-auto p-4 md: mr-12">
+        <h1 class="text-2xl font-bold mb-4">event</h1>
 
         @if(session()->has('success'))
         <div class="bg-green-200 p-4 mb-4">
@@ -73,47 +72,77 @@
         @endif
 
         <div class="mb-4">
-            <a href="{{ route('useradmin.create') }}" class="text-blue-500">Create new User</a>
+            <a href="{{ route('event.create') }}" class="text-blue-500">Create a event</a>
         </div>
 
+        <!-- Add dropdown filter form -->
+        <form method="get" action="{{ route('event.admin_index') }}" class="mb-4">
+            <label for="filter" class="block">Filter by Name:</label>
+            <select id="filter" name="filter" class="border p-2">
+                <option value="">All events</option>
+                @foreach($allevents as $eventId => $eventname)
+                <option value="{{ $eventId }}" @if(request('filter') == $eventId) selected @endif>{{ $eventname }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="bg-blue-500 text-white p-2 ml-2">Filter</button>
+        </form>
 
+        <div class="overflow-x-auto">
             <table class="min-w-full bg-white border">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border">Name</th>
-                        <th class="py-2 px-4 border">Email</th>
-                        <th class="py-2 px-4 border">Password</th>
-                        <th class="py-2 px-4 border">User Type</th>
+                        <th class="py-2 px-4 border">id</th>
+                        <th class="py-2 px-4 border">eventName</th>
+                        <th class="py-2 px-4 border">dateStart</th>
+                        <th class="py-2 px-4 border">dateEnd</th>
+                        <th class="py-2 px-4 border">timeStart</th>
+                        <th class="py-2 px-4 border">timeEnd</th>
+                        <th class="py-2 px-4 border">venue</th>
+                        <th class="py-2 px-4 border">description</th>
+                        <th class="py-2 px-4 border">price</th>
+                        <th class="py-2 px-4 border">category</th>
+                        <th class="py-2 px-4 border">subcategory1</th>
+                        <th class="py-2 px-4 border">status</th>
                         <th class="py-2 px-4 border">image</th>
-                        <th class="py-2 px-4 border">Edit</th>
-                        <th class="py-2 px-4 border">Delete</th>
+                        <th class="py-2 px-4 border">club_id</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($Users as $user)
+                    @foreach($event as $event)
                     <tr>
-                        <td class="py-2 px-4 border">{{ $user->name }}</td>
-                        <td class="py-2 px-4 border">{{ $user->email }}</td>
-                        <td class="py-2 px-4 border">{{ $user->password }}</td>
-                        <td class="py-2 px-4 border">{{ $user->usertype }}</td>
-                         <td class="py-2 px-4 border"><img style="max-width: 100px; height: auto;"
-                                src="{{ $user->getImageURL() }}" alt="Profile Picture"></td>
-                        <td class="py-2 px-4 border"><a href="{{ route('useradmin.edit', ['user' => $user]) }}"
+                        <td class="py-2 px-4 border">{{ $event->id }}</td>
+                        <td class="py-2 px-4 border">{{ $event->eventName }}</td>
+                        <td class="py-2 px-4 border">{{ $event->dateStart }}</td>
+                        <td class="py-2 px-4 border">{{ $event->dateEnd }}</td>
+                        <td class="py-2 px-4 border">{{ $event->timeStart }}</td>
+                        <td class="py-2 px-4 border">{{ $event->timeEnd }}</td>
+                        <td class="py-2 px-4 border">{{ $event->venue }}</td>
+                        <td class="py-2 px-4 border">{{ $event->description }}</td>
+                        <td class="py-2 px-4 border">{{ $event->price }}</td>
+                        <td class="py-2 px-4 border">{{ $event->category }}</td>
+                        <td class="py-2 px-4 border">{{ $event->subcategory1 }}</td>
+                        <td class="py-2 px-4 border">{{ $event->status }}</td>
+                        <td class="py-2 px-4 border"><img style="max-width: 100px; height: auto;"
+                         src="{{ $event->getImageURL() }}" alt="Profile Picture"></td>
+                        <td class="py-2 px-4 border">{{ $event->club_id }}</td> 
+                        <td class="py-2 px-4 border"><a href="{{ route('event.adminEdit', ['event' => $event]) }}"
                                 class="text-blue-500">Edit</a></td>
+       
                         <td class="py-2 px-4 border">
-                            <form method="post" action="{{ route('useradmin.destroy', ['user' => $user]) }}">
+                            <form method="post" action="{{ route('event.destroy', ['event' => $event]) }}">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="text-red-500">Delete</button>
                             </form>
-                        </td>    
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-
+    
+</div>
 </div>
     <!-- Footer -->
     <footer class="bg-gray-800 text-white p-4">

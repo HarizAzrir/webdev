@@ -92,6 +92,17 @@ public function destroy(User $user) {
     return redirect(route('useradmin.index'))->with('success','User has been deleted');
 }
 
+public function show($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        return response()->json($user);
+    }
+
 
 public function bookmarks()
     {

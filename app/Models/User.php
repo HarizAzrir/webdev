@@ -56,5 +56,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Bookmark::class, 'user_id');
     }
+    
+    public function club()
+    {
+        return $this->hasOne(Club::class, 'user_id');
+    }
 
 }

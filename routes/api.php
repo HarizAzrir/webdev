@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Spatie\GoogleCalendar\Event;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\BookmarkController;
 /*
@@ -32,4 +33,9 @@ Route::get('/calendar-home', function () {
 Route::get('/index/{email?}', 'App\Http\Controllers\GoogleCalendarController@index')->name('api.index');
 
 Route::get('/show-bookmarks', 'App\Http\Controllers\BookmarkController@getBookmarks');
+Route::get('/users/{userId}', 'App\Http\Controllers\UserController@show');
+Route::get('/events/{eventId}', 'App\Http\Controllers\EventController@show');
 
+// routes/api.php
+
+Route::delete('/bookmarks/{eventId}', 'App\Http\Controllers\BookmarkController@destroy');

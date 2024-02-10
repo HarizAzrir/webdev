@@ -30,9 +30,9 @@ class Event extends Model
 
     public function getImageURL(){
         if($this->image){
-            return url($this->image);
+            return url('storage/' .$this->image);
         }
-        return "image";
+        return "images/blankprofile.png";
     }
 
 

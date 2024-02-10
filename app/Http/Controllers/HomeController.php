@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Club;
+use App\Models\Event;
+use App\Models\Bookmark;
 Use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -15,16 +17,29 @@ class HomeController extends Controller
 
             if($usertype == "user"){
                 $clubs = Club::all();
-            return view("dashboard", ['clubs' => $clubs]);
+                $events = Event::all();
+            return view("dashboard", ['clubs' => $clubs], ['event' => $events]);
             }
 
+            
+
             else if($usertype == "admin"){
-                return view('adminhomepage');   //admin page
+                $eventCount = Event::count();
+                $clubCount = Club::count();
+                $userCount = User::count();
+                $bookmarkCount = Bookmark::count();
+                $clubs = Club::all();    
+                $events = Event::all();
+                 // Retrieve upcoming events (assuming 'dateStart' is a column in your events table)
+                $upcomingEvents = Event::where('dateStart', '>', now())->get();
+
+                return view('adminhomepage', compact('eventCount','userCount', 'bookmarkCount', 'clubCount', 'clubs', 'events', 'upcomingEvents'));   //admin page
             }
 
             else if($usertype == "president"){
                 $clubs = Club::all();
-            return view("dashboard", ['clubs' => $clubs]);
+                $events = Event::all();
+            return view("dashboard", ['clubs' => $clubs], ['event' => $events]);
             }
 
             else {
@@ -36,7 +51,8 @@ class HomeController extends Controller
 
     public function userhomepage(){
         $clubs = Club::all();
-        return view("dashboard", ['clubs' => $clubs]);
+        $events = Event::all();
+        return view("dashboard", ['clubs' => $clubs], ['event' => $events]);
     }
 
     public function adminhomepage(){

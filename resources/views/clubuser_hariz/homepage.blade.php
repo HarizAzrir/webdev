@@ -55,7 +55,7 @@
                             <div class="swiper-slide w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 mb-4 px-2">
                                 <div class="bg-white shadow-md rounded-md p-4 hover:shadow-lg">
                                     <a href="{{ route('clubuser_hariz.clubdetail', ['club' => $clubDataArray[$i]['id']]) }}">
-                                        <img src="{{ $clubDataArray[$i]['image'] ? url('storage/' . $clubDataArray[$i]['image']) : 'images/blankprofile.png' }}"
+                                      <img src="{{ $clubs[$i]->getImageURL() }}"
                                             alt="{{ $clubDataArray[$i]['clubname'] }}" class="h-60 w-full mx-auto object-cover rounded-t-md" />
     
                                         <div class="mt-4">

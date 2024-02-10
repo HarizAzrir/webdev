@@ -171,6 +171,10 @@ class ClubController extends Controller
         // ClubController.php
     public function detail(Club $club)
     {
+        
+        // Eager load the president and events relationships
+        $club = $club->load('events');
+
         return view('clubuser_hariz.clubdetail', compact('club'));
     }
     

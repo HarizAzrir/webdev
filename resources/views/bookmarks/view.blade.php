@@ -38,11 +38,22 @@
                                             {{ optional($bookmark->event)->eventName }}
                                             <!-- Use optional() to prevent error if event is null -->
                                         </td>
-                                        <!-- Add more cells for additional columns -->
+                                         <td class="px-6 py-4 whitespace-nowrap">
+                                            <form method="post" action="{{ route('bookmarks.destroy', ['bookmark' => $bookmark]) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="text-red-500">Delete</button>
+                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
+                         <!-- Button to Save to Google Calendar -->
+                    <div class="mt-4">
+                        <a href="{{ route('api.index', ['email' => Auth::user()->email]) }}" class="py-2 px-4 bg-blue-500 text-white rounded-md">Save All to Google Calendar</a>
+                    </div>
                     @else
                         <p class="text-gray-500">No bookmarks found.</p>
                     @endif
