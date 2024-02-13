@@ -21,9 +21,6 @@
                     <x-nav-link :href="route('eventuser.homepage')" :active="request()->routeIs('events')">
                         {{ __('Events') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('bookmarks.view')" :active="request()->routeIs('bookmarks')">
-                        {{ __('Bookmarks') }}
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -55,7 +52,7 @@
                 @endif
 
                 @if(Auth::check() && Auth::user()->usertype === 'user')
-                    <x-dropdown-link :href="route('api.index', ['email' => Auth::user()->email])">
+                    <x-dropdown-link :href="route('bookmarks.view')">
                         {{ __('My Events') }}
                     </x-dropdown-link>
                 @endif
@@ -100,9 +97,6 @@
             <x-nav-link :href="route('eventuser.homepage')" :active="request()->routeIs('events')">
                 {{ __('Events') }}
             </x-nav-link>
-             <x-nav-link :href="route('bookmarks.view')" :active="request()->routeIs('bookmarks')">
-                {{ __('Bookmarks') }}
-            </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -127,7 +121,7 @@
             @endif
 
             @if(Auth::user()->usertype === 'user')
-                <x-responsive-nav-link :href="route('eventuser.homepage')">
+                <x-responsive-nav-link :href="route('bookmarks.view')">
                     {{ __('My Events') }}
                 </x-responsive-nav-link>
             @endif

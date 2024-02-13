@@ -14,17 +14,33 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+   <div class="bg-white dark:bg-gray-900">
+    <div class="flex justify-center h-screen">
+        <div class="hidden bg-cover lg:block lg:w-2/3" style="background-image: url(https://images.unsplash.com/photo-1535837436558-f4a66525fef6?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)">
+            <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+                <div>
+                    <h2 class="text-2xl font-bold text-white sm:text-3xl">Welcome to the University Event Management System</h2>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+                    <p class="max-w-xl mt-3 text-gray-200">
+                        Explore and manage events organized by various clubs and societies within the university. Stay connected and engaged with the vibrant community activities.
+                    </p>
+                </div>
             </div>
         </div>
-    </body>
+
+        <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+            <div class="flex-1">
+                <div class="text-center">
+
+                    <p class="mt-3 text-gray-500 dark:text-gray-300">Sign in to access your account</p>
+                </div>
+
+                <div class="mt-8">
+                   {{$slot}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </html>

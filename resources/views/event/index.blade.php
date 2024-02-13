@@ -97,14 +97,21 @@
                                     <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
                                     <textarea name="description" id="description" readonly class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Event description">{{ $event->description }}</textarea>
                                 </div>
-                                <!-- ... (event details) ... -->
+                                                                <!-- ... (event details) ... -->
                                 @if(auth()->user()->usertype === 'president')
-                                    <div class="flex justify-end mt-4">
-                                        <form method="get" enctype="multipart/form-data" action="{{ route('event.edit',['event' => $event]) }}">
-                                            <button class="bg-purple-500 text-white py-2 px-4 rounded-md">Edit Page</button>
-                                        </form>
-                                    </div>
+                                    @php
+                                        $userClubId = optional(auth()->user()->club)->id; // Get the club_id of the authenticated user
+                                    @endphp
+
+                                    @if($userClubId && $userClubId === $event->club_id)
+                                        <div class="flex justify-end mt-4">
+                                            <form method="get" enctype="multipart/form-data" action="{{ route('event.edit',['event' => $event]) }}">
+                                                <button class="bg-purple-500 text-white py-2 px-4 rounded-md">Edit Page</button>
+                                            </form>
+                                        </div>
+                                    @endif
                                 @endif
+
                             </div>
 
                             <!-- Slide 2: Club Details -->

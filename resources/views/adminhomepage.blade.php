@@ -61,8 +61,7 @@
 
         <!-- Content -->
         <div class="flex-1 ml-4 mt-8">
-           <!-- Main Content -->
-    <div class="flex flex-col flex-1 overflow-y-auto p-4 md:ml-24 mr-12">
+            <div class="flex flex-col flex-1 overflow-y-auto p-4 md:ml-24 mr-12">
         <!-- Welcome Section -->
         <h1 class="text-2xl font-bold">Welcome to the Admin Dashboard!</h1>
         <p class="mt-2 text-gray-600">You are now in the admin dashboard for event management.</p>
@@ -95,6 +94,13 @@
                         <p class="text-gray-600">{{ $bookmarkCount }}</p>
                     </div>
                 </div>
+                 <!-- Bar Chart Section -->
+                    <div class="bg-white p-4 mt-8 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-4">Monthly Events Overview</h2>
+                    <div class="mt-6" style="max-width: 75%;">
+                        <canvas id="monthlyEventsChart" height="300"></canvas>
+                    </div>
+                </div>
             </div>
 
             <!-- Upcoming Events Section -->
@@ -116,8 +122,45 @@
                     @endif
                 </div>
             </div>
-
         </div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Fetch the data from your controller
+    const monthlyEventsData = {!! json_encode($monthlyEvents) !!};
+
+    // Extract labels and data from the fetched data
+    const labels = monthlyEventsData.map(month => month.month);
+    const data = monthlyEventsData.map(month => month.eventCount);
+
+    // Create a bar chart
+    const ctx = document.getElementById('monthlyEventsChart').getContext('2d');
+    const monthlyEventsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Monthly Events',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            maintainAspectRatio: false, // Set to false to make the chart responsive
+            responsive: true // Enable responsiveness
+        }
+    });
+</script>
+
     </div>
 </div>
         </div>

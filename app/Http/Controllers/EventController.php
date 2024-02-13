@@ -26,10 +26,10 @@ class EventController extends Controller
         
     }
     
-    public function homepage(Event $event)
+    public function homepage(Request $request)
     {
         // Retrieve all events from the "events" table
-        $events = Event::with('club')->get();
+        $events = Event::all();
         return view('eventuser.homepage', ['events' => $events]);
     }
 
@@ -109,7 +109,7 @@ class EventController extends Controller
         $allevents = event::all(); // Replace YourModel with the actual model you are using
 
         // Get unique event names
-        $uniqueeventNames = $allevents->unique('eventname')->pluck('eventname', 'id');
+        $uniqueeventNames = $allevents->unique('eventName')->pluck('eventName', 'id');
 
         // Check if there is a filter in the request
         if ($request->has('filter')) {
@@ -117,7 +117,7 @@ class EventController extends Controller
 
             // If the filtered event is found, display only that event
             if ($filteredevent) {
-                $event = event::where('eventname', $filteredevent->eventname)->get();
+                $event = event::where('eventName', $filteredevent->eventName)->get();
             } else {
                 // If the filtered event is not found, display all events
                 $event = $allevents;
@@ -213,7 +213,7 @@ public function adminEdit(Event $event)
             $imagePath = $request->file('image')->store('images', 'public');
             $data['image'] = $imagePath;
         }}
-    
+
 
         public function show($eventId)
         {
@@ -226,5 +226,5 @@ public function adminEdit(Event $event)
 
             return response()->json($event);
         }
-
+    
 }

@@ -364,46 +364,77 @@
         color: #4b5563; /* Text color for table data */
         padding: 10px; /* Add padding for better appearance */
     }
+
+    .glass-button {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), #E9EDFA);
+        border: none;
+        color: #555; /* Adjust text color as needed */
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .glass-button:hover {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), #B6C0E1);
+    }
+
 </style>
 
 <!-- ... (your existing HTML code) ... -->
-  <!-- Button to Save to Google Calendar -->
-                    <div class="mt-4">
-                        <a href="{{ route('bookmarks.view') }}" class="py-2 px-4 bg-blue-500 text-white rounded-md">Go back to Bookmark</a>
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 bg-white border-b border-gray-200">
+                <!-- View Your Favourited Events and Save and Update button -->
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700">View My Saved Events</h3>
                     </div>
-<!-- Add buttons to initiate auth sequence, sign out, and add event to calendar -->
-<div class="flex justify-between items-center mb-4">
-    <h3 class="text-lg font-semibold text-gray-700">View My Saved Events</h3>
-    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
-    <button id="add_event_button" onclick="addBookmarkedEventsToCalendar()">Add Event</button>
-    <button id="refresh_calendar_button" onclick="refreshCalendar()">Refresh Calendar</button>
-</div>
+                    <div class="mt-4">
+                        <a href="{{ route('bookmarks.view') }}" class="py-2 px-4 bg-blue-500 text-white rounded-md">Edit My Events</a>
+                    </div>
+                </div>
+                <br><br>
 
-<!-- Table Container -->
-<div id="localContent" class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-b border-gray-200">
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-            <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Event Name
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Time
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Venue
-                </th>
-            </tr>
-        </thead>
-        <tbody class="px-6 py-4 whitespace-nowrap" id="bookmarkListBody" class="bg-white divide-y divide-gray-200">
-            <!-- Bookmarks will be dynamically populated here -->
-        </tbody>
-    </table>
-</div>
+                <!-- Add buttons to initiate auth sequence, sign out, and add event to calendar -->
+                <div class="flex justify-between items-center mb-4">
+                    <button id="authorize_button" onclick="handleAuthClick()" class="glass-button flex-grow">Authorize</button>
+                    <button id="add_event_button" onclick="addBookmarkedEventsToCalendar()" class="glass-button flex-grow" >Add Event</button>
+                    <button id="refresh_calendar_button" onclick="refreshCalendar()" class="glass-button flex-grow">Refresh Calendar</button>
+                    <button id="signout_button" onclick="handleSignoutClick()" class="glass-button flex-grow">Sign Out</button>
+                </div>
+
+                <!-- Table Container -->
+                <div id="localContent" class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-b border-gray-200">
+                <table class="min-w-full divide-y divide-gray-200", >
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Event Name
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Time
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Venue
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="px-6 py-4 whitespace-nowrap" id="bookmarkListBody" class="bg-white divide-y divide-gray-200" class="bg-white divide-y divide-gray-200">
+                        <!-- Bookmarks will be dynamically populated here -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+<!-- Updated Code -->
 
 <!-- FullCalendar Container -->
 <div id="calendarContainer"></div>

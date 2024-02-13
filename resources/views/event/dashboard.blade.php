@@ -11,7 +11,6 @@
         <div class="container mx-auto flex flex-col md:flex-row space-x-4">
             <div class="w-full md:w-2/3">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                
                     <h3 class="text-lg font-semibold mb-4">Basic Statistics</h3>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
@@ -50,9 +49,6 @@
                     @else
                         <p>No club information available</p>
                     @endif
-                    <div class="mt-4">
-                        <a href="{{ route('eventPresident.edit', ['club' => $club]) }}" class="py-2 px-4 bg-blue-500 text-white rounded-md">Edit Club Information</a>
-                    </div>
                 </div>
             </div>
 
@@ -86,6 +82,7 @@
                     <h1 class="font-bold text-4xl mb-4">{{ $club->clubname }}</h1>
                     <h1 class="text-3xl">List of Events</h1>
                 </div>
+                
                 <!-- ✅ Grid Section - Starts Here 👇 -->
 <section id="Projects"
     class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
@@ -95,7 +92,7 @@
         <div class="w-72 bg-gradient-to-tr from-[#FFF6E6] via-[#FFDAE7] to-[#C2CCFF] shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
             <a href="{{ route('event.index', ['event' => $event->id]) }}">
                 <!-- Use the event's image URL or fallback to a default image -->
-                <img src="{{ $event->image }}"
+                <img src="{{ $event->getImageURL() }}"
                     alt="{{ $event->eventName }}" class="h-80 w-72 object-cover rounded-t-xl" />
 
                 <div class="px-4 py-3 w-72">

@@ -80,8 +80,8 @@
             <label for="filter" class="block">Filter by Name:</label>
             <select id="filter" name="filter" class="border p-2">
                 <option value="">All events</option>
-                @foreach($allevents as $eventId => $eventname)
-                <option value="{{ $eventId }}" @if(request('filter') == $eventId) selected @endif>{{ $eventname }}</option>
+                @foreach($allevents as $eventId => $eventName)
+                <option value="{{ $eventId }}" @if(request('filter') == $eventId) selected @endif>{{ $eventName }}</option>
                 @endforeach
             </select>
             <button type="submit" class="bg-blue-500 text-white p-2 ml-2">Filter</button>

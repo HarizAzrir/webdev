@@ -10,21 +10,25 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+        <!-- Add buttons to switch between About and Events -->
+            <div class="flex justify-center mb-8">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-4" onclick="showAbout()">Show About</button>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md" onclick="showEvents()">Show Events</button>
+            </div>
             <!-- Display club image and club nickname -->
             <div class="text-center mb-4">
-<img src="{{ $club->getImageURL() }}" alt="{{ $club->clubname }}" class="w-80 mx-auto mb-2 rounded-lg">
-                <p class="text-lg font-semibold">{{ $club->club_nickname }}</p>
+            <img src="{{ $club->getImageURL() }}" alt="{{ $club->clubname }}" class="w-80 mx-auto mb-2 rounded-lg">
+                <p class="text-lg font-semibold">{{ $club->clubname }}</p>
             </div>
 
              <!-- Display club about text -->
             <div id="aboutSection">
-                <p class="text-lg mb-6">{{ optional($club->user)->name }}</p>
-
-                <p class="text-lg mb-6">{{ $club->about }}</p>
+                <h2 class="text-center text-xl mb-6">About</h2>
+                <p class="text-center mb-6">{{ $club->about }}</p>
             </div>
-
             <!-- Display club events (initially hidden) -->
             <div id="eventsSection" class="hidden">
+            <h2 class="text-center text-xl mb-6">List of Events</h2>
                 <!-- Add events content here -->
                  <!-- ✅ Grid Section - Starts Here 👇 -->
 <section id="Projects"
@@ -88,12 +92,6 @@
     @endforeach
 
 </section>
-            </div>
-
-            <!-- Add buttons to switch between About and Events -->
-            <div class="flex justify-center">
-                <button class="bg-blue-500 text-black px-4 py-2 rounded-md mr-4" onclick="showAbout()">Show About</button>
-                <button class="bg-blue-500 text-black px-4 py-2 rounded-md" onclick="showEvents()">Show Events</button>
             </div>
         </div>
     </div>
